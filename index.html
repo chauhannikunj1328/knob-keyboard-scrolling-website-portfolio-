@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>KNOB — a keyboard with two knobs</title>
+    <meta name="description" content="A portfolio concept: one keyboard, two knobs and a display, told in a real-time 3D scroll story." />
+    <meta name="theme-color" content="#cfd1cb" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      html {
+        background: #cfd1cb;
+      }
+      /* shown from the first byte, until React mounts and its own loader takes over */
+      .boot {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        font: 600 27px system-ui, sans-serif;
+        color: #171717;
+      }
+      .boot i {
+        position: relative;
+        width: 120px;
+        height: 2px;
+        overflow: hidden;
+        background: rgba(23, 23, 23, 0.18);
+      }
+      .boot i::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        width: 40%;
+        background: #d9480f;
+        animation: boot 1.1s ease-in-out infinite;
+      }
+      @keyframes boot {
+        from {
+          transform: translateX(-100%);
+        }
+        to {
+          transform: translateX(250%);
+        }
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Jost:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap" />
+  </head>
+  <body>
+    <div id="root"><div class="boot"><span>KNOB</span><i></i></div></div>
+    <noscript>KNOB needs JavaScript to show its 3D keyboard.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

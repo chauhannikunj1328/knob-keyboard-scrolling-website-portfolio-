@@ -1,0 +1,418 @@
+.page {
+  position: relative;
+  z-index: 3;
+  background: var(--bg);
+  color: var(--ink);
+  --anchor: calc(var(--below-bars) + 16px);
+  box-shadow: 0 -40px 80px rgba(40, 42, 38, 0.1);
+}
+
+.page section[id] {
+  scroll-margin-top: var(--anchor);
+}
+
+.page h1,
+.page h2,
+.page h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+}
+
+.wrap {
+  width: min(1200px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+/* ---------------------------------------------------------------- buy box */
+
+.buy {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(28px, 4.5vw, 64px);
+  padding-top: calc(var(--below-bars) + 28px);
+  padding-bottom: 72px;
+  align-items: start;
+}
+
+.gallery {
+  display: grid;
+  gap: 12px;
+  position: sticky;
+  top: var(--anchor);
+}
+
+.main {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.main img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: fade 0.25s var(--ease-ui);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+}
+
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.thumbs button {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.thumbs button[aria-current="true"] {
+  border-color: var(--ink);
+}
+
+.thumbs img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.maker {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.title {
+  margin: 6px 0 0;
+  font-size: clamp(56px, 7vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+.sub {
+  margin-top: 12px;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.price strong {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.price span {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips li {
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(23, 23, 23, 0.07);
+  font-size: 13px;
+}
+
+.actions {
+  margin-top: 28px;
+}
+
+.primary {
+  width: 100%;
+  height: 52px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--button);
+  color: var(--on-button);
+  font: inherit;
+  font-size: 16px;
+  font-weight: var(--w-medium);
+  cursor: pointer;
+  transition: background var(--t-button) var(--ease-ui);
+}
+
+.primary:hover {
+  background: var(--button-hover);
+}
+
+.note {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.bullets {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--faint);
+}
+
+.bullets h2 {
+  margin-bottom: 12px;
+  font-size: 26px;
+}
+
+.bullets ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.bullets b {
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ timer */
+
+.timer {
+  padding: 72px 0;
+  background: #bfc2bb;
+}
+
+.timer h2,
+.specs h2 {
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+}
+
+.timer p {
+  margin-top: 12px;
+  color: var(--muted);
+  max-width: 34em;
+}
+
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 92px;
+  height: 230px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  border-radius: 26px;
+  background: #060606;
+  color: #fff;
+  font-size: 15px;
+  text-align: center;
+}
+
+.screen span {
+  min-width: 52px;
+  padding: 2px 10px;
+  border-radius: 99px;
+  line-height: 1.3;
+}
+
+.screen .sel {
+  background: #f27a1a;
+  font-weight: 600;
+}
+
+.screen .bar {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 40px;
+  border-radius: 20px;
+  background: linear-gradient(#ff7a14, #f8dfcb);
+}
+
+.screen em {
+  position: absolute;
+  bottom: 12px;
+  font-style: normal;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.glyph {
+  width: 18px;
+  height: 18px;
+  margin-bottom: 4px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.steps li {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.steps b {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+}
+
+/* ---------------------------------------------------------------- banners */
+
+.banners {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.banners img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/* ------------------------------------------------------------------ specs */
+
+.specs {
+  padding: 80px 0;
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 36px;
+}
+
+.groups h3 {
+  margin-bottom: 14px;
+  font-size: 26px;
+}
+
+.groups dl {
+  margin: 0;
+}
+
+.groups dl > div {
+  padding: 12px 0;
+  border-top: 1px solid var(--faint);
+  font-size: 14px;
+}
+
+.groups dt {
+  color: var(--muted);
+}
+
+.groups dd {
+  margin: 2px 0 0;
+}
+
+/* ----------------------------------------------------------------- sticky */
+
+.sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px var(--gutter);
+  background: var(--bg);
+  border-top: 1px solid var(--faint);
+  transform: translateY(100%);
+  transition: transform 0.3s var(--ease-ui);
+}
+
+.sticky.show {
+  transform: none;
+}
+
+.sticky div {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.sticky strong {
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.sticky button {
+  height: 40px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--button);
+  color: var(--on-button);
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .buy {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery {
+    position: static;
+  }
+
+  .steps {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .groups {
+    grid-template-columns: 1fr;
+  }
+
+  .banners {
+    grid-template-columns: 1fr;
+  }
+}

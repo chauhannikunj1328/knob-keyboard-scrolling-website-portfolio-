@@ -1,0 +1,58 @@
+.gl {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100lvh;
+  display: block;
+}
+
+.ui {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* the store header and the tab bar stay above everything, including the product page */
+.bars {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* a soft grey studio behind the loader, so its glow has something to light */
+.veil {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 46%, #fbfaff 0%, #eeedf3 60%, #e2e1e9 100%);
+}
+
+.scroll {
+  position: relative;
+  height: var(--scroll-length);
+  pointer-events: none;
+}
+
+.error {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22vh;
+  text-align: center;
+  padding: 0 var(--gutter);
+  color: var(--muted);
+  pointer-events: auto;
+}
+
+.error button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
