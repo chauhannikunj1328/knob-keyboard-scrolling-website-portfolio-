@@ -22,25 +22,43 @@
   letter-spacing: var(--track-ui);
 }
 
+/* the section tabs are pill buttons: the current one filled orange, the others an outline a touch
+   darker than the page, so they read as different from the plain text options in the top bar */
 .links {
   display: flex;
   justify-self: start;
-  gap: var(--nav-gap);
+  gap: 8px;
 }
 
 .links a {
-  padding: 12px 0;
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 16px;
+  border: 1.5px solid rgba(23, 23, 23, 0.22);
+  border-radius: var(--radius-pill);
+  background: var(--bg);
   pointer-events: auto;
   color: var(--muted);
   text-decoration: none;
   font-size: var(--size-nav);
   font-stretch: var(--stretch-nav);
-  transition: color var(--t-link) var(--ease-ui);
+  transition:
+    color var(--t-link) var(--ease-ui),
+    background var(--t-link) var(--ease-ui),
+    border-color var(--t-link) var(--ease-ui);
 }
 
-.links a:hover,
-.links a.active {
+.links a:hover {
+  border-color: rgba(23, 23, 23, 0.45);
   color: var(--ink);
+}
+
+.links a.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-weight: var(--w-medium);
 }
 
 .buy {
@@ -133,9 +151,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: auto;
     min-height: 48px;
     padding: 0;
+    border: 0;
     border-bottom: 1px solid #f2f2f4;
+    border-radius: 0;
+    background: none;
     color: var(--ink);
     font-size: 16px;
   }
@@ -145,7 +167,8 @@
   }
 
   .links a.active {
-    color: var(--button);
+    background: none;
+    color: var(--accent);
     font-weight: var(--w-medium);
   }
 
@@ -154,6 +177,6 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--button);
+    background: var(--accent);
   }
 }
