@@ -8,7 +8,7 @@ const LINKS: { name: SectionName; label: string }[] = [
   { name: "overview", label: "Overview" },
   { name: "inside", label: "Inside" },
   { name: "vibe-row", label: "Layout" },
-  { name: "knob", label: "Knobs" },
+  { name: "knob", label: "Knobs + Display" },
   { name: "specs", label: "Key" },
 ];
 
