@@ -304,14 +304,21 @@
 .banners {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
+  gap: 16px;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 72px var(--gutter) 0;
 }
 
+/* (height: auto, because the width/height attributes on the tags would otherwise fix them at 1600px) */
 .banners img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 1;
   object-fit: cover;
+  border-radius: 16px;
+  background: #fff;
 }
 
 /* ------------------------------------------------------------------ specs */
@@ -414,5 +421,6 @@
 
   .banners {
     grid-template-columns: 1fr;
+    padding-top: 48px;
   }
 }

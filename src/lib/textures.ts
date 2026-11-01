@@ -245,7 +245,7 @@ function createDisplay(): Screen {
   function draw(mode: number, level: number) {
     ctx.clearRect(0, 0, W, H);
     ctx.save();
-    rr(0, 0, W, H, 70);
+    rr(0, 0, W, H, 94); // 0.7 cm of the 1.9 cm screen width: matches SCREEN_R in keyboard.ts
     ctx.clip();
     ctx.fillStyle = "#050505";
     ctx.fillRect(0, 0, W, H);

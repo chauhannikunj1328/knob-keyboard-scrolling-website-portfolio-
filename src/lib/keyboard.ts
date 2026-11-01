@@ -518,7 +518,8 @@ export function createKeyboard({ legend, padTexture, pcbTexture, batteryTexture,
     knobRing: new THREE.MeshStandardMaterial({ color: 0x1d1e20, roughness: 0.6, metalness: 0.4 }),
     // the display: a black glass bezel around the screen
     bezel: new THREE.MeshStandardMaterial({ color: 0x0a0a0b, roughness: 0.25, metalness: 0.6, envMapIntensity: 1.2 }),
-    screen: new THREE.MeshBasicMaterial({ map: display.texture, toneMapped: false }),
+    // (alphaTest cuts the screen's rounded corners out of its plane)
+    screen: new THREE.MeshBasicMaterial({ map: display.texture, toneMapped: false, alphaTest: 0.5 }),
     knobGlow: new THREE.MeshBasicMaterial({ map: knobGlow, transparent: true, depthWrite: false, opacity: 0 }),
     rubber: new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.9 }),
     port: new THREE.MeshBasicMaterial({ color: 0x020202 }),
@@ -890,7 +891,9 @@ export function createKeyboard({ legend, padTexture, pcbTexture, batteryTexture,
 
   // the display strip: a black glass bezel with the screen set into it
   const BEZEL = 0.2;
-  const bezel = new THREE.Mesh(slab(DISPLAY.w + BEZEL * 2, DISPLAY.d + BEZEL * 2, 0.16, 0.5, 0.03, 8, [], 2), mats.bezel);
+  const SCREEN_R = 0.7; // cm: the screen's corner radius (the canvas clips to the same, see textures.ts)
+  // (the bezel's corner radius is the screen's plus the bezel width, so the two curves are concentric)
+  const bezel = new THREE.Mesh(slab(DISPLAY.w + BEZEL * 2, DISPLAY.d + BEZEL * 2, 0.16, SCREEN_R + BEZEL, 0.03, 10, [], 2), mats.bezel);
   bezel.position.set(DISPLAY.x, FRAME_H / 2 + 0.01, DISPLAY.z);
   bezel.castShadow = true;
   const screen = new THREE.Mesh(flatPlane(DISPLAY.w, DISPLAY.d), mats.screen);
