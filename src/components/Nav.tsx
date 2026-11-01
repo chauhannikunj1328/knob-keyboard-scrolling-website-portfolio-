@@ -56,7 +56,6 @@ export function Nav({ ref, active, onGo }: { ref?: Ref<HTMLElement>; active: Sec
 
   return (
     <nav ref={ref} className={`${styles.nav} ${open ? styles.open : ""}`} aria-label="KNOB sections">
-      <span aria-hidden="true" />
       <button ref={toggle} type="button" className={styles.toggle} aria-expanded={open} aria-controls="section-menu" onClick={() => setOpen((o) => !o)}>
         <small>KNOB</small>
         <span>

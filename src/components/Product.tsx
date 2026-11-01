@@ -45,13 +45,13 @@ export function Product() {
       <section ref={buy} id="buy" className={`${styles.wrap} ${styles.buy}`} aria-labelledby="product-title">
         <div className={styles.gallery}>
           <div className={styles.main}>
-            <img key={GALLERY[shot].src} src={GALLERY[shot].src} alt={GALLERY[shot].alt} decoding="async" />
+            <img key={GALLERY[shot].src} src={GALLERY[shot].src} alt={GALLERY[shot].alt} width="1600" height="1600" decoding="async" />
           </div>
           <ul className={styles.thumbs} aria-label="Product photos">
             {GALLERY.map((g, i) => (
               <li key={g.src}>
                 <button type="button" onClick={() => setShot(i)} aria-label={`Show photo ${i + 1}`} aria-current={i === shot}>
-                  <img src={g.src} alt="" loading="lazy" decoding="async" />
+                  <img src={g.src} alt="" width="1600" height="1600" loading="lazy" decoding="async" />
                 </button>
               </li>
             ))}
@@ -116,7 +116,7 @@ export function Product() {
 
       <section className={styles.banners} aria-label="More photos">
         {BANNERS.map((b) => (
-          <img key={b.src} src={b.src} alt={b.alt} loading="lazy" decoding="async" />
+          <img key={b.src} src={b.src} alt={b.alt} width="1600" height="1600" loading="lazy" decoding="async" />
         ))}
       </section>
 

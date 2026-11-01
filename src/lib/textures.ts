@@ -3,7 +3,6 @@ import { KEYS, type Key } from "./layout";
 import type { KeyboardInputs, Screen } from "./keyboard";
 import { MARK, MARK_DOT, MARK_STROKE } from "./mark";
 
-const BASE = "https://assets.uberdesigner.ai/vibetyper/";
 
 const PX = 96; // atlas pixels per cm
 const ATLAS = 2048;
@@ -298,27 +297,130 @@ function drawShadow() {
   return tex;
 }
 
-// onFile reports each finished download (for the loading bar), starting with (0, total)
+/* ------------------------------------------------------- generated surface maps */
+
+// The surface maps are drawn here rather than downloaded, so the page has nothing to fetch from
+// anywhere else: a fine grain (as a normal map) for the caps and metal, a smudge map for the gloss,
+// a soft light pool for each key, and the board's traces.
+let seedState = 7;
+const rand = () => ((seedState = (seedState * 16807) % 2147483647) / 2147483647);
+
+function canvasOf(w: number, h = w) {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  return { canvas, ctx: canvas.getContext("2d")! };
+}
+
+function flatTexture(canvas: HTMLCanvasElement, { srgb = false, aniso = 4 } = {}) {
+  const t = new THREE.CanvasTexture(canvas);
+  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = aniso;
+  return t;
+}
+
+// fine, even grain: random heights turned into a tiling normal map
+function drawGrain() {
+  const S = 256;
+  const h = new Float32Array(S * S);
+  for (let i = 0; i < h.length; i++) h[i] = rand();
+  // a light blur, so the grain is soft rather than pixel noise
+  const b = new Float32Array(S * S);
+  const at = (x: number, y: number) => h[((y + S) % S) * S + ((x + S) % S)];
+  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) b[y * S + x] = (at(x, y) * 4 + at(x - 1, y) + at(x + 1, y) + at(x, y - 1) + at(x, y + 1)) / 8;
+  const g = (x: number, y: number) => b[((y + S) % S) * S + ((x + S) % S)];
+  const { canvas, ctx } = canvasOf(S);
+  const img = ctx.createImageData(S, S);
+  for (let y = 0; y < S; y++) {
+    for (let x = 0; x < S; x++) {
+      const dx = (g(x + 1, y) - g(x - 1, y)) * 3;
+      const dy = (g(x, y + 1) - g(x, y - 1)) * 3;
+      const len = Math.hypot(dx, dy, 1);
+      const i = (y * S + x) * 4;
+      img.data[i] = ((-dx / len) * 0.5 + 0.5) * 255;
+      img.data[i + 1] = ((-dy / len) * 0.5 + 0.5) * 255;
+      img.data[i + 2] = ((1 / len) * 0.5 + 0.5) * 255;
+      img.data[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  return flatTexture(canvas, { aniso: 8 });
+}
+
+// soft blotches, mostly light: they lower the roughness a little here and there
+function drawSmudge() {
+  const S = 512;
+  const { canvas, ctx } = canvasOf(S);
+  ctx.fillStyle = "#d4d4d4";
+  ctx.fillRect(0, 0, S, S);
+  for (let i = 0; i < 70; i++) {
+    const x = rand() * S;
+    const y = rand() * S;
+    const r = 20 + rand() * 90;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    const dark = rand() > 0.5;
+    g.addColorStop(0, dark ? "rgba(150,150,150,0.45)" : "rgba(255,255,255,0.4)");
+    g.addColorStop(1, "rgba(128,128,128,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  }
+  return flatTexture(canvas);
+}
+
+// the pool of light a key's LED throws onto the plate: white in the middle, nothing at the edge
+function drawLightPool() {
+  const S = 128;
+  const { canvas, ctx } = canvasOf(S);
+  const g = ctx.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+  g.addColorStop(0, "rgba(255,255,255,1)");
+  g.addColorStop(0.45, "rgba(255,255,255,0.55)");
+  g.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, S, S);
+  return flatTexture(canvas);
+}
+
+// the logic board's raised traces and pads (used as a bump map)
+function drawBoard() {
+  const W = 1024;
+  const H = 384;
+  const { canvas, ctx } = canvasOf(W, H);
+  ctx.fillStyle = "#2a2a2a";
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = "#cfcfcf";
+  ctx.fillStyle = "#e6e6e6";
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = ctx.lineJoin = "round";
+  for (let i = 0; i < 260; i++) {
+    let x = rand() * W;
+    let y = rand() * H;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    for (let k = 0; k < 3; k++) {
+      if (rand() > 0.5) x += (rand() - 0.5) * 160;
+      else y += (rand() - 0.5) * 100;
+      ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  return flatTexture(canvas, { srgb: true });
+}
+
+// onFile reports each step (for the loading bar), starting with (0, total)
 export async function loadTextures(onFile?: (loaded: number, total: number) => void): Promise<KeyboardInputs> {
-  const FILES = 4;
-  let loaded = 0;
-  onFile?.(0, FILES);
-  const loader = new THREE.TextureLoader();
-  const load = async (file: string, { srgb = true, aniso = 8 } = {}) => {
-    const t = await loader.loadAsync(BASE + file);
-    if (srgb) t.colorSpace = THREE.SRGBColorSpace;
-    t.anisotropy = aniso;
-    onFile?.(++loaded, FILES);
-    return t;
-  };
-  const [padTexture, pcbTexture, grain, smudge] = await Promise.all([
-    load("light-pool.png", { srgb: false, aniso: 4 }),
-    load("pcb.webp"),
-    load("grain-normal.png", { srgb: false }),
-    load("smudge.png", { srgb: false, aniso: 4 }),
-    // the legends use these faces: wait for them before drawing
-    ...['500 40px "Inter"', '600 40px "Inter"'].map((f) => document.fonts.load(f)),
-  ]);
+  const STEPS = 2;
+  onFile?.(0, STEPS);
+  // the legends use these faces: wait for them before drawing
+  await Promise.all(['500 40px "Inter"', '600 40px "Inter"'].map((f) => document.fonts.load(f)));
+  onFile?.(1, STEPS);
+  const padTexture = drawLightPool();
+  const pcbTexture = drawBoard();
+  const grain = drawGrain();
+  const smudge = drawSmudge();
+  onFile?.(2, STEPS);
   const { cells, rects } = packAtlas();
   // the surface maps tile: ExtrudeGeometry UVs are in centimetres, so repeat sets the physical scale
   const tiled = (tex: THREE.Texture, cm: number) => {
