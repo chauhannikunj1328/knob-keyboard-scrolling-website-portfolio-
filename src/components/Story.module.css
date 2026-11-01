@@ -23,11 +23,11 @@
   pointer-events: none;
 }
 
-/* a soft grey studio behind the loader, so its glow has something to light */
+/* the same warm studio grey as the rest of the page, a touch lighter in the middle, so the loader's glow has something to light */
 .veil {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 46%, #fbfaff 0%, #eeedf3 60%, #e2e1e9 100%);
+  background: radial-gradient(ellipse 70% 60% at 50% 46%, #dcded8 0%, var(--bg) 62%, #c3c5be 100%);
 }
 
 .scroll {

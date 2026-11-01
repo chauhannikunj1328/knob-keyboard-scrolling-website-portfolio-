@@ -23,7 +23,7 @@
   transform: translateY(-50%);
 }
 
-/* the white shell: lit from above, with a soft drop shadow */
+/* the shell, in the page's light grey: lit from above, with a soft drop shadow */
 .capsule {
   position: relative;
   display: flex;
@@ -32,12 +32,12 @@
   height: 72px;
   padding: 0 12px;
   border-radius: var(--radius-pill);
-  background: linear-gradient(180deg, #ffffff 0%, #f1f0f5 55%, #dddce4 100%);
+  background: linear-gradient(180deg, #f3f4f0 0%, #e2e4de 55%, #cfd1cb 100%);
   box-shadow:
-    inset 0 1.5px 0 #fff,
-    inset 0 -2px 4px rgba(60, 50, 90, 0.12),
-    0 1px 2px rgba(30, 20, 60, 0.12),
-    0 20px 44px -14px rgba(40, 25, 90, 0.38);
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -2px 4px rgba(40, 42, 36, 0.12),
+    0 1px 2px rgba(30, 32, 28, 0.14),
+    0 20px 44px -14px rgba(40, 42, 36, 0.4);
 }
 
 /* the recessed track */
@@ -47,14 +47,14 @@
   height: 46px;
   overflow: hidden;
   border-radius: var(--radius-pill);
-  background: linear-gradient(180deg, #dcdae4, #ecebf1);
+  background: linear-gradient(180deg, #bfc2bb, #d7d9d3);
   box-shadow:
-    inset 0 2px 5px rgba(40, 30, 80, 0.28),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.7),
-    0 1px 0 rgba(255, 255, 255, 0.95);
+    inset 0 2px 5px rgba(40, 42, 36, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
-/* the fill, in the buy button's purple with a light glow: a pill from the start, growing up to the percentage */
+/* the fill, in the site's orange with a light glow: a pill from the start, growing up to the percentage */
 .fill {
   position: absolute;
   top: var(--track-pad);
@@ -133,7 +133,7 @@
   right: 8%;
   height: 16px;
   border-radius: 50%;
-  background: rgba(30, 20, 60, 0.28);
+  background: rgba(40, 42, 36, 0.3);
   filter: blur(10px);
 }
 
