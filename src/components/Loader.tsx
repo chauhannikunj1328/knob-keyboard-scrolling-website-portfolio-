@@ -13,7 +13,7 @@ export interface LoaderHandle {
 const HOLD = 260;
 // The bar sits on 1% for DELAY ms, then fills steadily over DURATION ms.
 const DELAY = 7000;
-const DURATION = 8000;
+const DURATION = 5000;
 
 // The loading capsule: a glowing fill in the buy button's purple, and the keyboard's silver volume
 // knob at the end of it, turning one full circle as the bar goes from 1 to 100%. Downloads arrive
